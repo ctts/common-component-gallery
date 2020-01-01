@@ -5,6 +5,9 @@
       :width="ctx.width"
       :height="ctx.height"
       :style="{'background':ctx.background}"
+      @mousedown="touchstart"
+      @mousemove="touchmove"
+      @mouseup="touchend"
       @touchstart="touchstart"
       @touchmove="touchmove"
       @touchend="touchend"
@@ -33,12 +36,20 @@ export default {
   data () {
     return {
       ctx: {},
-      preview: ''
+      preview: '',
+      signatureOption: {
+        canvasDom: {},
+        width: document.body.clientWidth,
+        height: document.body.clientHeight,
+        background: 'rgb(255, 255, 255)',
+        strokeStyle: 'rgba(0, 0, 0, 1)',
+        lineWidth: 1
+      }
     }
   },
   mounted () {
-    // 参数分别是： canvasDom width height background strokeStyle
-    this.ctx = new Signature(this.$refs.signature, document.body.clientWidth, document.body.clientHeight, 'rgb(255, 255, 255)', 'rgba(0, 0, 0, 1)')
+    this.signatureOption.canvasDom = this.$refs.signature
+    this.ctx = new Signature(this.signatureOption)
   },
   methods: {
     touchstart (e) {
