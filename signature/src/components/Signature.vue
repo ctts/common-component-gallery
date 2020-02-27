@@ -33,23 +33,45 @@
 import Signature from '../assets/Signature'
 export default {
   name: 'signature',
+  props: {
+    background: {
+      type: String,
+      default: 'rgb(255, 255, 255)'
+    },
+    strokeStyle: {
+      type: String,
+      default: 'rgba(0, 0, 0, 1)'
+    },
+    width: {
+      type: Number,
+      default: document.body.clientWidth
+    },
+    height: {
+      type: Number,
+      default: document.body.clientHeight
+    },
+    lineWidth: {
+      type: Number,
+      default: 1
+    }
+  },
   data () {
     return {
       ctx: {},
       preview: '',
-      signatureOption: {
-        canvasDom: {},
-        width: document.body.clientWidth,
-        height: document.body.clientHeight,
-        background: 'rgb(255, 255, 255)',
-        strokeStyle: 'rgba(0, 0, 0, 1)',
-        lineWidth: 1
-      }
+      canvasDom: {}
     }
   },
   mounted () {
-    this.signatureOption.canvasDom = this.$refs.signature
-    this.ctx = new Signature(this.signatureOption)
+    this.canvasDom = this.$refs.signature
+    this.ctx = new Signature({
+      canvasDom: this.canvasDom,
+      width: this.width,
+      height: this.height,
+      background: this.background,
+      strokeStyle: this.strokeStyle,
+      lineWidth: this.lineWidth
+    })
   },
   methods: {
     touchstart (e) {
